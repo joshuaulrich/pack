@@ -23,8 +23,8 @@ function(template, values) {
 
     # A null byte
     if( type == 'x' ) {
-      val <- list(NULL)
       values <- values[-1]
+      next
     }
 
     # A null padded string
