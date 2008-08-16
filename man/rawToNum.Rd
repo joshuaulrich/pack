@@ -15,7 +15,7 @@
 %  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-  A numeric vlaue containing the bytes in \code{x}.
+  A numeric value containing the bytes in \code{x}.
 }
 %\references{
 %  \url{http://perldoc.perl.org/functions/pack.html}\cr
@@ -25,9 +25,10 @@
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 \seealso{ \code{\link{numToRaw}} }
-%\examples{
-%##---- Should be DIRECTLY executable !! ----
-%##-- ==>  Define data, use random,
-%##--	or do  help(data=index)  for the standard data sets.
-%}
+\examples{
+  # Will be left nul padded
+  (x <- numToRaw(421,4))
+  rawToNum(x,2)
+  rawToNum(x,4)
+}
 \keyword{ utilities }

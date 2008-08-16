@@ -25,9 +25,10 @@
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 \seealso{ \code{\link{rawToNum}} }
-%\examples{
-%##---- Should be DIRECTLY executable !! ----
-%##-- ==>  Define data, use random,
-%##--	or do  help(data=index)  for the standard data sets.
-%}
+\examples{
+  # Will be left nul padded
+  (x <- numToRaw(421,4))
+  rawToNum(x,2)
+  rawToNum(x,4)
+}
 \keyword{ utilities }

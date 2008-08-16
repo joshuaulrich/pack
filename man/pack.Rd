@@ -8,11 +8,11 @@
   pack(template, \dots)
 }
 \arguments{
-  \item{template}{ A string, see \'Details\' }
+  \item{template}{ A string, see 'Details' }
   \item{\dots}{ Values to be packed into a raw vector }
 }
 \details{
-  \code{template} should follow the convention below:
+  Valid \code{template} values are:\cr
   'a' - A null padded string\cr
   'A' - A space padded ASCII string\cr
   'C' - An unsigned char (octet) value\cr
@@ -20,7 +20,7 @@
   'V' - An unsigned long (32-bit) in "VAX" (little-endian) order\cr\cr
   Both 'a' and 'A' may be followed by a repeat value.  A repeat value of '*'
   will cause the remainder of the bytes in \code{values} to be placed in
-  the last element.\cr
+  the last element.\cr\cr
   '/' allows packing and unpacking of a sequence of values where the packed
   structure contains a packed item count followed by the packed items themselves.
 }
@@ -35,11 +35,9 @@
 % ~Make other sections like Warning with \section{Warning }{....} ~
 %}
 \seealso{ \code{\link{unpack}} }
-%\examples{
-%##---- Should be DIRECTLY executable !! ----
-%##-- ==>  Define data, use random,
-%##--	or do  help(data=index)  for the standard data sets.
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-%}
+\examples{
+  (x <- pack('A4 C v A8 V', 'pack', 2, 8, 'sequence', 68098))
+  (u1 <- unpack('A4 C a*', x))
+  (u2 <- unpack('v/A V', u1[[3]]))
+}
 \keyword{ utilities }

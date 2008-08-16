@@ -12,8 +12,9 @@ function(template, ...) {
   values <- list(...)
 
   types <- gsub('[0-9]|\\*','',template)
-  bytes <- gsub('[a-Z]','',template)
-  bytes <- as.numeric( gsub('\\*','-1',bytes) )
+  bytes <- gsub('[a-Z]|/','',template)
+  bytes <- gsub('\\*','-1',bytes)
+  bytes <- as.numeric(bytes)
   result <- NULL
 
   # Loop over template / value pairs
@@ -65,8 +66,17 @@ function(template, ...) {
     if( type == 'V' ) {
       val <- numToRaw( value, 4 )
       nul <- raw(0)
+    } else
+    # Packed item count followed by packed items
+    if( regexpr('/',type) ) {
+      seq <- unlist(strsplit(type,'/'))
+      len <- nchar(value)
+      num <- pack(seq[1], len)
+      val <- pack(paste(seq[2],len,sep=''),value)
+      val <- c(num,val)
+      nul <- raw(0)
     }
-    
+
     # Combine result
     result <- c(result,val,nul)
   }

@@ -43,7 +43,9 @@ function(template, values) {
     if( type == 'A' ) {
       if( byte > length(values) )
         stop('template too long for values')
-      val <- rawToChar( values[1:byte] )
+      val <- values[1:byte]
+      val[val==0] <- charToRaw(' ')
+      val <- rawToChar( val )
       values <- values[-(1:byte)]
     } else
     # An unsigned char (octet) value.
