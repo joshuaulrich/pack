@@ -8,10 +8,6 @@ function(template, ...) {
 
   # http://perldoc.perl.org/functions/pack.html
 
-  # If TEMPLATE requires more arguments to pack() than actually given,
-  # pack() assumes additional "" arguments.  If TEMPLATE requires fewer
-  # arguments to pack() than actually given, extra arguments are ignored.
-
   template <- unlist(strsplit(template,"\\s"))
   values <- list(...)
 

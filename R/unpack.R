@@ -8,11 +8,6 @@ function(template, ...) {
 
   # http://perldoc.perl.org/functions/unpack.html
 
-  # If there are more pack codes or if the repeat count of a field or a
-  # group is larger than what the remainder of the input string allows,
-  # return NULL. If the input string is longer than one described by the
-  # TEMPLATE, the rest is ignored.
-  
   template <- unlist(strsplit(template,"\\s"))
   values <- unlist(list(...))
 
