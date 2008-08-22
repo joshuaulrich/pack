@@ -7,31 +7,33 @@
 function(template, ...) {
 
   # http://perldoc.perl.org/functions/pack.html
-  
+
+  # If TEMPLATE requires more arguments to pack() than actually given,
+  # pack() assumes additional "" arguments.  If TEMPLATE requires fewer
+  # arguments to pack() than actually given, extra arguments are ignored.
+
   template <- unlist(strsplit(template,"\\s"))
   values <- list(...)
 
   types <- gsub('[0-9]|\\*','',template)
-  bytes <- gsub('[a-Z]|/','',template)
+  bytes <- gsub('[aACdfvVx]|/','',template)
   bytes <- gsub('\\*','-1',bytes)
-  bytes <- as.numeric(bytes)
+  suppressWarnings(bytes <- as.numeric(bytes))
   result <- NULL
 
   # Loop over template / value pairs
   shift <- 0
   for( i in 1:length(template) ) {
+        
+    value <- values[i-shift][[1]]
     type <- types[i]
     byte <- bytes[i]
 
-    # A null byte
-    if( type == 'x' ) {
+    # If template requires more args than given
+    if( is.null(value) ) {
       val <- as.raw(0)
       nul <- raw(0)
-      shift <- shift + 1
-    } else {
-      value <- values[[i-shift]]
-    }
-
+    } else
     # A null padded string
     if( type == 'a' ) {
       # In the case of 'a*'
@@ -68,13 +70,21 @@ function(template, ...) {
       nul <- raw(0)
     } else
     # Packed item count followed by packed items
-    if( regexpr('/',type) ) {
+    if( regexpr('/',type)>0 ) {
       seq <- unlist(strsplit(type,'/'))
       len <- nchar(value)
       num <- pack(seq[1], len)
       val <- pack(paste(seq[2],len,sep=''),value)
       val <- c(num,val)
       nul <- raw(0)
+    } else
+    # A null byte
+    if( type == 'x' ) {
+      val <- as.raw(0)
+      nul <- raw(0)
+      shift <- shift + 1
+    } else {
+      stop('\'',type,'\' is an unsupported template value')
     }
 
     # Combine result

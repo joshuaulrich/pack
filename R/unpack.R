@@ -4,20 +4,27 @@
 #-------------------------------------------------------------------------#
 
 'unpack' <-
-function(template, values) {
+function(template, ...) {
 
   # http://perldoc.perl.org/functions/unpack.html
+
+  # If there are more pack codes or if the repeat count of a field or a
+  # group is larger than what the remainder of the input string allows,
+  # return NULL. If the input string is longer than one described by the
+  # TEMPLATE, the rest is ignored.
   
   template <- unlist(strsplit(template,"\\s"))
+  values <- unlist(list(...))
 
   types <- gsub('[0-9]|\\*','',template)
-  bytes <- gsub('[a-Z]|/','',template)
+  bytes <- gsub('[aACdfvVx]|/','',template)
   bytes <- gsub('\\*','-1',bytes)
-  bytes <- as.numeric(bytes)
+  suppressWarnings(bytes <- as.numeric(bytes))
   result <- NULL
   
   # Loop over template / value pairs
   for( i in 1:length(template) ) {
+    
     type <- types[i]
     byte <- bytes[i]
 
@@ -27,6 +34,11 @@ function(template, values) {
       next
     }
 
+    # Check template and values length
+    if( length(values) == 0 ) {
+      val <- NULL
+      #stop('template values too long for binary data')
+    } else
     # A null padded string
     if( type == 'a' ) {
       # In the case of 'a*'
@@ -76,14 +88,17 @@ function(template, values) {
       values <- values[-(1:4)]
     } else
     # Packed item count followed by packed items
-    if( regexpr('/',type) ) {
+    if( regexpr('/',type)>0 ) {
       seq <- unlist(strsplit(type,'/'))
       num <- unpack(paste(seq[1],'a*'), values)
       val <- unpack(paste(seq[2],num[[1]],' a*',sep=''),num[[2]])
       values <- val[[2]]
       val <- unlist(val[[1]])
+    } else
+    if( type != 'x' ) {
+      stop('\'',type,'\' is an unsupported template value')
     }
-    
+
     # Combine result
     result <- c(result,list(val))
   }

@@ -1,7 +1,7 @@
 Package: pack
 Type: Package
 Title: Create and manipulate raw vectors
-Version: 0.1
+Version: 0.1-1
 Date: 2008-07-22
 Author: Josh Ulrich
 Maintainer: Josh Ulrich <josh.m.ulrich@gmail.com>
