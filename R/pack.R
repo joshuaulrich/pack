@@ -12,7 +12,7 @@ function(template, ...) {
   values <- list(...)
 
   types <- gsub('[0-9]|\\*','',template)
-  bytes <- gsub('[aACdfvVx]|/','',template)
+  bytes <- gsub('[[:alpha:]]|/','',template)
   bytes <- gsub('\\*','-1',bytes)
   suppressWarnings(bytes <- as.numeric(bytes))
   result <- NULL
@@ -30,26 +30,35 @@ function(template, ...) {
       val <- as.raw(0)
       nul <- raw(0)
     } else
-    # A null padded string
     if( type == 'a' ) {
+      value <- as.character(value)
       # In the case of 'a*'
-      if( byte == -1 ) {
-        val <- charToRaw( value )
-        nul <- raw(0)
-      } else {
-        if( nchar(value) > byte )
-          stop(paste('list value (',value,') too large for template value',sep=''))
-        val <- charToRaw( value )
-        nul <- rep( as.raw(0), byte-nchar(value) )
-      }
+      if( byte == -1 )
+        byte <- nchar(value)
+      if( nchar(value) > byte )
+        stop(paste('list value (',value,') too large for template value',sep=''))
+      val <- charToRaw( value )
+      nul <- rep( as.raw(0), byte-nchar(value) )
     } else
     # A space padded ASCII string
     if( type == 'A' ) {
+      value <- as.character(value)
       if( nchar(value) > byte )
         stop(paste('list value (',value,') too large for template value',sep=''))
       val <- charToRaw( value )
       nul <- rep( charToRaw(' '), byte-nchar(value) )
     } else
+    # Bit string, low-to-high order
+    if( type == 'b' ) {
+      val <- packBits( value )
+      nul <- raw(0)
+    } else
+    # Bit string, high-to-low order
+    if( type == 'B' ) {
+      val <- rev( packBits( value ) )
+      nul <- raw(0)
+    } else
+    # A null padded string
     # An unsigned char (octet) value.
     if( type == 'C' ) {
       val <- numToRaw( value, 1 )
@@ -65,6 +74,8 @@ function(template, ...) {
       val <- numToRaw( value, 4 )
       nul <- raw(0)
     } else
+    # A double-precision float in the native format.
+    # A single-precision float in the native format.    
     # Packed item count followed by packed items
     if( regexpr('/',type)>0 ) {
       seq <- unlist(strsplit(type,'/'))

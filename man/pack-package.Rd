@@ -2,17 +2,18 @@
 \alias{pack-package}
 \docType{package}
 \title{
-  Create and manipulate raw vectors
+  Convert values to/from raw vectors
 }
 \description{
-  Functions to convert multiple data type values to/from raw bytes
+  \code{pack} allows R programmers to easily put their data into
+  binary formats that other programs / machines can understand.
 }
 \details{
   \tabular{ll}{
     Package: \tab pack\cr
     Type: \tab Package\cr
     Version: \tab 0.1-1\cr
-    Date: \tab 2008-07-22\cr
+    Date: \tab 2008-08-22\cr
     License: \tab GPL-3\cr
     LazyLoad: \tab yes\cr
   }

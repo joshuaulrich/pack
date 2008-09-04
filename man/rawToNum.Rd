@@ -26,7 +26,7 @@
 %}
 \seealso{ \code{\link{numToRaw}} }
 \examples{
-  # Will be left nul padded
+  # Will be left null padded
   (x <- numToRaw(421,4))
   rawToNum(x,2)
   rawToNum(x,4)
