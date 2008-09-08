@@ -13,7 +13,7 @@
 }
 \details{
   Currently supported \code{template} values are:\cr
-  'a' - A null padded string\cr
+  'a' - A null padded string (as of R-2.8.0, strings cannot contain embedded nulls)\cr
   'A' - A space padded string\cr
   'b' - An ascending bit order binary vector, (must be a multiple of 8 long)\cr
   'B' - An descending bit order binary vector, (must be a multiple of 8 long)\cr
@@ -41,9 +41,10 @@
   \url{http://perldoc.perl.org/functions/unpack.html}
 }
 \author{ Josh Ulrich }
-%\note{ ~~further notes~~ 
-% ~Make other sections like Warning with \section{Warning }{....} ~
-%}
+\note{
+  When unpacking, 'A' strips trailing whitespace and nulls and 'a' returns data verbatim
+  (but with embedded nulls removed, since strings cannot contain embedded nulls as of R-2.8.0).
+}
 \seealso{ \code{\link{pack}} }
 \examples{
   (x <- pack('A4 C v A8 V', 'pack', 2, 8, 'sequence', 68098))

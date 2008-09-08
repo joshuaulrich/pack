@@ -49,7 +49,8 @@ function(template, ...) {
       if( byte > length(values) )
         stop('template too long for values')
       val <- values[1:byte]
-      val <- rawToChar( val )
+      # strings can no longer have embedded nuls as of R-2.8.0
+      val <- rawToChar( val[as.logical(val)] )
       values <- values[-(1:byte)]
     } else
     # A space padded ASCII string
@@ -57,7 +58,8 @@ function(template, ...) {
       if( byte > length(values) )
         stop('template too long for values')
       val <- values[1:byte]
-      val <- gsub('\0', '', rawToChar( val ))
+      # strings can no longer have embedded nuls as of R-2.8.0
+      val <- rawToChar( val[as.logical(val)] )
       values <- values[-(1:byte)]
     } else
     # Bit string, low-to-high order
