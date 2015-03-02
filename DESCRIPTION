@@ -8,3 +8,4 @@ Maintainer: Josh Ulrich <josh.m.ulrich@gmail.com>
 Description: Functions to easily convert data to binary formats other programs/machines can understand.
 License: GPL-3
 LazyLoad: yes
+Suggests: testthat
