@@ -65,5 +65,19 @@ test_that("pack works", {
 
   # TODO 'x' with counts
 
+  # Native 4-byte float
+  x <- as.raw(rev(c(0x42, 0xf6, 0xe6, 0x66))) # No corresponding 'f' pack() field
+  # expect_equal(unpack('f', x), list(123.45))  # TODO Doesn't work yet
+
+  # Native 8-byte float
+  x <- as.raw(c(0xcd, 0xcc, 0xcc, 0xcc, 0xcc, 0xdc, 0x5e, 0x40)) # No corresponding 'd' pack() field
+  expect_equal(unpack('d', x), list(123.45))
+
+  # Raw bytes
+  x <- as.raw(c(0xcd, 0x40)) # No corresponding 'H' pack() field
+  # expect_equal(unpack('H', x), list(0xcd))  # TODO doesn't work yet
+  expect_equal(unpack('H2', x), list(x))
+  expect_equal(unpack('H*', x), list(x))
+
   # TODO '/' count handling
 })
