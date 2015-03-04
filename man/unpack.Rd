@@ -22,7 +22,7 @@
   'V' - An unsigned long (32-bit) in "VAX" (little-endian) order\cr
   'f' - A single-precision float\cr
   'd' - A double-precision float\cr
-  'x' - A null byte\cr
+  'x' - Skip next byte, and push nothing onto return value for it\cr
   'H' - A raw byte\cr\cr
   Values 'a', 'A', and 'H' may be followed by a repeat value.  A repeat value
   of '*' will cause the remainder of the bytes in \code{values} to be placed

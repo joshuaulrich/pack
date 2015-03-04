@@ -15,7 +15,7 @@ function(template, ...) {
   bytes <- gsub('[[:alpha:]]|/','',template)
   bytes <- gsub('\\*','-1',bytes)
   suppressWarnings(bytes <- as.numeric(bytes))
-  result <- NULL
+  result <- list()
   
   # Loop over template / value pairs
   for( i in 1:length(template) ) {

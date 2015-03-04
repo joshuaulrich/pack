@@ -87,9 +87,9 @@ test_that("pack works", {
   expect_equal(unpack('V', x), list(1234567))
 
   ## Null bytes
-  x <- pack('x', "foo")
+  x <- pack('x', "foo")  # input data doesn't matter
   expect_equal(x, as.raw(0))
-  # expect_equal(unpack('x', x), list(NULL))  # TODO Doesn't work yet
+  expect_equal(unpack('x', x), list())
 
   # TODO 'x' with counts
 
