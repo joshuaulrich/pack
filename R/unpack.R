@@ -65,6 +65,7 @@ function(template, ...) {
       val <- values[1:byte]
       # strings can no longer have embedded nuls as of R-2.8.0
       val <- rawToChar( val[as.logical(val)] )
+      val <- sub(" +$", "", val)
       values <- values[-(1:byte)]
     } else
     # Bit string, low-to-high order
