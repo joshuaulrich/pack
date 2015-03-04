@@ -36,15 +36,18 @@ test_that("pack works", {
   ## TODO Space-padded string with stars
 
 
+  ## Something to work with for the tests below
+  bvec <- c(1,1,0,1,0,0,1,0)
+
   ## Binary vector, little-endian
-  x <- pack('b', as.raw(c(1,1,0,1,0,0,1,0)))
-  expect_equal(x, as.raw(0x4b))
-  expect_equal(unpack('b', x), list(as.raw(c(1,1,0,1,0,0,1,0))))
+  x <- pack('b', as.raw(bvec))
+  expect_equal(x, as.raw(sum(bvec * 2^(0:7))))  # 0x4b
+  expect_equal(unpack('b', x), list(as.raw(bvec)))
 
   ## Binary vector, big-endian
-  x <- pack('B', as.raw(c(1,1,0,1,0,0,1,0)))
-  # expect_equal(x, as.raw(0xd2))  # TODO Doesn't work yet
-  # expect_equal(unpack('B', x), list(as.raw(c(1,1,0,1,0,0,1,0)))) # TODO Doesn't work yet
+  x <- pack('B', as.raw(bvec))
+  # expect_equal(x, as.raw(sum(bvec * 2^(7:0))))  # 0xd2 # TODO Doesn't work yet
+  # expect_equal(unpack('B', x), list(as.raw(bvec))) # TODO Doesn't work yet
 
   # TODO 'b' and 'B' with counts
 
