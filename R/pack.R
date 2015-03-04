@@ -43,6 +43,8 @@ function(template, ...) {
     # A space padded ASCII string
     if( type == 'A' ) {
       value <- as.character(value)
+      if( byte == -1 ) # 'A*'
+        byte <- nchar(value)
       if( nchar(value) > byte )
         stop(paste('list value (',value,') too large for template value',sep=''))
       val <- charToRaw( value )

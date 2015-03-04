@@ -46,8 +46,11 @@ function(template, ...) {
     } else
     # A null padded string
     if( type == 'a' ) {
+      if( byte == -1) # 'a*'
+        byte <- length(values)
       if( byte > length(values) )
         stop('template too long for values')
+
       val <- values[1:byte]
       # strings can no longer have embedded nuls as of R-2.8.0
       val <- rawToChar( val[as.logical(val)] )
@@ -55,6 +58,8 @@ function(template, ...) {
     } else
     # A space padded ASCII string
     if( type == 'A' ) {
+      if( byte == -1) # 'A*'
+        byte <- length(values)
       if( byte > length(values) )
         stop('template too long for values')
       val <- values[1:byte]
