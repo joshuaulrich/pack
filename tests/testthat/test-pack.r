@@ -20,11 +20,18 @@ test_that("pack works", {
   x <- pack('A10', 'packrats')
   expect_equal(x, as.raw(c(0x70, 0x61, 0x63, 0x6b, 0x72, 0x61, 0x74, 0x73, 0x20, 0x20)))
   # expect_equal(unpack('A10', x), list('packrats'))  # TODO Doesn't work yet
+  # % perl -le '$x=pack "A10", "packrats"; $y=unpack "A10", $x; print "{$_}" for $x, $y'
+  # {packrats  }
+  # {packrats}
+
 
   ## Null-padded string with stars
   # x <- pack('a*', 'packrats')  # TODO Doesn't work yet
   # expect_equal(x, as.raw(c(0x70, 0x61, 0x63, 0x6b, 0x72, 0x61, 0x74, 0x73)))
   # expect_equal(unpack('a*', x), list('packrats'))
+  # % perl -le '$x=pack "a*", "packrats"; $y=unpack "a*", $x; print "{$_}" for $x, $y'
+  # {packrats}
+  # {packrats}
 
   ## TODO Space-padded string with stars
 
