@@ -60,8 +60,8 @@ test_that("pack works", {
 
   ## Binary vector, big-endian
   x <- pack('B', as.raw(bvec))
-  # expect_equal(x, as.raw(sum(bvec * 2^(7:0))))  # 0xd2 # TODO Doesn't work yet
-  # expect_equal(unpack('B', x), list(as.raw(bvec))) # TODO Doesn't work yet
+  expect_equal(x, as.raw(sum(bvec * 2^(7:0))))
+  expect_equal(unpack('B', x), list(as.raw(bvec)))
 
   # TODO 'b' and 'B' with counts
 

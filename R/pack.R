@@ -57,7 +57,7 @@ function(template, ...) {
     } else
     # Bit string, high-to-low order
     if( type == 'B' ) {
-      val <- rev( packBits( value ) )
+      val <- packBits( rev(value) )
       nul <- raw(0)
     } else
     # A null padded string
