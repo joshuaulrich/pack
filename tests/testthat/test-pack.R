@@ -125,7 +125,8 @@ test_that("pack works", {
 
   # Raw bytes
   x <- as.raw(c(0xcd, 0x40)) # No corresponding 'H' pack() field
-  # expect_equal(unpack('H', x), list(0xcd))  # TODO doesn't work yet
+  expect_equal(unpack('H',  x), list(x[1]))
+  expect_equal(unpack('H1', x), list(x[1]))
   expect_equal(unpack('H2', x), list(x))
   expect_equal(unpack('H*', x), list(x))
 

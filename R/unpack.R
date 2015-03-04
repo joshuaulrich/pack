@@ -36,8 +36,9 @@ function(template, ...) {
     } else
     # (decimal 240 would be hex F0.)
     if( type == 'H' ) {
-      # In the case of 'H*'
-      if( byte == -1 )
+      if( is.na(byte) ) # 'H'
+        byte <- 1
+      if( byte == -1 )  # 'H*'
         byte <- length(values)
       if( byte > length(values) )
         stop('template too long for values')
