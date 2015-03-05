@@ -2,6 +2,7 @@ context("pack")
 test_that("pack works", {
 
   ## Null-padded string
+  # x <- readBin(pipe("perl -e 'print pack(q{a8}, q{packrats})'", "rb"), raw(), n=8)
   x <- pack('a8', 'packrats')
   expect_equal(x, as.raw(c(0x70, 0x61, 0x63, 0x6b, 0x72, 0x61, 0x74, 0x73)))
   expect_equal(unpack('a8', x), list('packrats'))
@@ -52,18 +53,20 @@ test_that("pack works", {
   # TODO 'b' and 'B' with counts
 
   ## Character vector (basically a no-op)
-  x <- pack('C', 70)
-  expect_equal(x, as.raw(0x46))  # 'F' character
+  x <- pack('C', 0x46)  # 'F' character
+  expect_equal(x, as.raw(0x46))
   expect_equal(unpack('C', x), list(0x46))
 
   # TODO 'C' with counts
 
   ## Unsigned 16-bit integer, little-endian
+  # x <- readBin(pipe("perl -e 'print pack(q{v}, 12345)'", "rb"), raw(), n=2)
   x <- pack('v', 12345)
   expect_equal(x, as.raw(c(0x39, 0x30)))
   expect_equal(unpack('v', x), list(12345))
 
   ## Unsigned 32-bit integer, little-endian
+  # x <- readBin(pipe("perl -e 'print pack(q{V}, 1234567)'", "rb"), raw(), n=4)
   x <- pack('V', 1234567)
   expect_equal(x, as.raw(c(0x87, 0xd6, 0x12, 0)))
   expect_equal(unpack('V', x), list(1234567))
@@ -76,10 +79,12 @@ test_that("pack works", {
   # TODO 'x' with counts
 
   # Native 4-byte float
-  x <- as.raw(rev(c(0x42, 0xf6, 0xe6, 0x66))) # No corresponding 'f' pack() field
+  # x <- readBin(pipe("perl -e 'print pack(q{f}, 123.45)'", "rb"), raw(), n=4)
+  x <- as.raw(c(0x66, 0xe6, 0xf6, 0x42)) # No corresponding 'f' pack() field
   # expect_equal(unpack('f', x), list(123.45))  # TODO Doesn't work yet
 
   # Native 8-byte float
+  # x <- readBin(pipe("perl -e 'print pack(q{d}, 123.45)'", "rb"), raw(), n=8)
   x <- as.raw(c(0xcd, 0xcc, 0xcc, 0xcc, 0xcc, 0xdc, 0x5e, 0x40)) # No corresponding 'd' pack() field
   expect_equal(unpack('d', x), list(123.45))
 
