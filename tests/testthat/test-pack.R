@@ -94,18 +94,24 @@ test_that("pack works", {
   # TODO 'x' with counts
 
   # Native 4-byte float
-  # x <- readBin(pipe("perl -e 'print pack(q{f}, 123.45)'", "rb"), raw(), n=4)
-  x <- as.raw(c(0x66, 0xe6, 0xf6, 0x42)) # No corresponding 'f' pack() field
-  if(.Platform$endian=="big")  # x was generated on little-endian machine
-    x <- rev(x)
-  # expect_equal(unpack('f', x), list(123.45))  # TODO Doesn't work yet
+  x <- pack('f', 123.45)
+  # y <- readBin(pipe("perl -e 'print pack(q{f}, 123.45)'", "rb"), raw(), n=4)
+  y <- as.raw(c(0x66, 0xe6, 0xf6, 0x42))
+  if(.Platform$endian=="big")  # y was generated on little-endian machine
+    y <- rev(y)
+  eps <- sqrt(2^-23)
+  expect_equal(x, y, tolerance=eps)
+  expect_equal(unpack('f', x), list(123.45), tolerance=eps)
 
   # Native 8-byte float
-  # x <- readBin(pipe("perl -e 'print pack(q{d}, 123.45)'", "rb"), raw(), n=8)
-  x <- as.raw(c(0xcd, 0xcc, 0xcc, 0xcc, 0xcc, 0xdc, 0x5e, 0x40)) # No corresponding 'd' pack() field
-  if(.Platform$endian=="big")  # x was generated on little-endian machine
-    x <- rev(x)
-  expect_equal(unpack('d', x), list(123.45))
+  x <- pack('d', 123.45)
+  # y <- readBin(pipe("perl -e 'print pack(q{d}, 123.45)'", "rb"), raw(), n=8)
+  y <- as.raw(c(0xcd, 0xcc, 0xcc, 0xcc, 0xcc, 0xdc, 0x5e, 0x40))
+  if(.Platform$endian=="big")  # y was generated on little-endian machine
+    y <- rev(y)
+  eps <- sqrt(2^-52)
+  expect_equal(x, y, tolerance=eps)
+  expect_equal(unpack('d', x), list(123.45), tolerance=eps)
 
   # Raw bytes
   x <- as.raw(c(0xcd, 0x40)) # No corresponding 'H' pack() field

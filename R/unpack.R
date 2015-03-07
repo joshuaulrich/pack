@@ -96,14 +96,12 @@ function(template, ...) {
     } else
     # A double-precision float in the native format.
     if( type == 'd' ) {
-      bits <- as.integer(rawToBits(values[1:8]))
-      val <- (-1)^bits[64] * 2^(sum( 2^(10:0) * bits[63:53] )-1023) * (1 + sum( 2^-(1:52) * bits[52:1] ))
+      val <- readBin(values[1:8], "numeric", 1L, 8L)
       values <- values[-(1:8)]
     } else
     # A single-precision float in the native format.
     if( type == 'f' ) {
-      bits <- as.integer(rawToBits(values[1:4]))
-      val <- (-1)^bits[32] * 2^(sum( 2^( 7:0) * bits[31:24] )- 127) * (1 + sum( 2^-(1:23) * bits[1:23] ))
+      val <- readBin(values[1:4], "numeric", 1L, 4L)
       values <- values[-(1:4)]
     } else
     # Packed item count followed by packed items

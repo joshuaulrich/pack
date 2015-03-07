@@ -77,7 +77,15 @@ function(template, ...) {
       nul <- raw(0)
     } else
     # A double-precision float in the native format.
+    if( type == 'd' ) {
+      val <- writeBin( value, raw(), 8L )
+      nul <- raw(0)
+    } else
     # A single-precision float in the native format.    
+    if( type == 'f' ) {
+      val <- writeBin( value, raw(), 4L )
+      nul <- raw(0)
+    } else
     # Packed item count followed by packed items
     if( regexpr('/',type)>0 ) {
       seq <- unlist(strsplit(type,'/'))
