@@ -103,6 +103,11 @@ test_that("pack works", {
   expect_equal(x, y, tolerance=eps)
   expect_equal(unpack('f', x), list(123.45), tolerance=eps)
 
+  # Should coerce input to number, the same way Perl does
+  x <- pack('f', '123.45')
+  expect_equal(x, y, tolerance=eps)
+
+
   # Native 8-byte float
   x <- pack('d', 123.45)
   # y <- readBin(pipe("perl -e 'print pack(q{d}, 123.45)'", "rb"), raw(), n=8)
@@ -112,6 +117,11 @@ test_that("pack works", {
   eps <- sqrt(2^-52)
   expect_equal(x, y, tolerance=eps)
   expect_equal(unpack('d', x), list(123.45), tolerance=eps)
+
+  # Should coerce input to number, the same way Perl does
+  x <- pack('d', '123.45')
+  expect_equal(x, y, tolerance=eps)
+
 
   # Raw bytes
   x <- as.raw(c(0xcd, 0x40)) # No corresponding 'H' pack() field
