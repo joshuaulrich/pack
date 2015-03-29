@@ -23,6 +23,9 @@ function(template, ...) {
     type <- types[i]
     byte <- bytes[i]
 
+    if( is.na(byte) ) # Single letter without count
+      byte <- 1
+
     # A null byte
     if( type == 'x' ) {
       values <- values[-1]
@@ -36,8 +39,6 @@ function(template, ...) {
     } else
     # (decimal 240 would be hex F0.)
     if( type == 'H' ) {
-      if( is.na(byte) ) # 'H'
-        byte <- 1
       if( byte == -1 )  # 'H*'
         byte <- length(values)
       if( byte > length(values) )
