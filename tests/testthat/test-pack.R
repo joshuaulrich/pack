@@ -87,9 +87,9 @@ test_that("pack works", {
   expect_equal(unpack('V', x), list(1234567))
 
   ## Null bytes
-  x <- pack('x', "foo")
+  x <- pack('x', "foo")  # input data doesn't matter
   expect_equal(x, as.raw(0))
-  # expect_equal(unpack('x', x), list(NULL))  # TODO Doesn't work yet
+  expect_equal(unpack('x', x), list())
 
   # TODO 'x' with counts
 
@@ -103,6 +103,11 @@ test_that("pack works", {
   expect_equal(x, y, tolerance=eps)
   expect_equal(unpack('f', x), list(123.45), tolerance=eps)
 
+  # Should coerce input to number, the same way Perl does
+  x <- pack('f', '123.45')
+  expect_equal(x, y, tolerance=eps)
+
+
   # Native 8-byte float
   x <- pack('d', 123.45)
   # y <- readBin(pipe("perl -e 'print pack(q{d}, 123.45)'", "rb"), raw(), n=8)
@@ -113,9 +118,15 @@ test_that("pack works", {
   expect_equal(x, y, tolerance=eps)
   expect_equal(unpack('d', x), list(123.45), tolerance=eps)
 
+  # Should coerce input to number, the same way Perl does
+  x <- pack('d', '123.45')
+  expect_equal(x, y, tolerance=eps)
+
+
   # Raw bytes
   x <- as.raw(c(0xcd, 0x40)) # No corresponding 'H' pack() field
-  # expect_equal(unpack('H', x), list(0xcd))  # TODO doesn't work yet
+  expect_equal(unpack('H',  x), list(x[1]))
+  expect_equal(unpack('H1', x), list(x[1]))
   expect_equal(unpack('H2', x), list(x))
   expect_equal(unpack('H*', x), list(x))
 

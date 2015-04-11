@@ -12,16 +12,19 @@ function(template, ...) {
   values <- unlist(list(...))
 
   types <- gsub('[0-9]|\\*','',template)
-  bytes <- gsub('[[:alpha:]]|/','',template)
-  bytes <- gsub('\\*','-1',bytes)
-  suppressWarnings(bytes <- as.numeric(bytes))
-  result <- NULL
+  counts <- gsub('[[:alpha:]]|/','',template)
+  counts <- gsub('\\*','-1',counts)
+  suppressWarnings(counts <- as.numeric(counts))
+  result <- list()
   
   # Loop over template / value pairs
   for( i in 1:length(template) ) {
     
     type <- types[i]
-    byte <- bytes[i]
+    count <- counts[i]
+
+    if( is.na(count) ) # Single letter without count
+      count <- 1
 
     # A null byte
     if( type == 'x' ) {
@@ -36,37 +39,36 @@ function(template, ...) {
     } else
     # (decimal 240 would be hex F0.)
     if( type == 'H' ) {
-      # In the case of 'H*'
-      if( byte == -1 )
-        byte <- length(values)
-      if( byte > length(values) )
+      if( count == -1 )  # 'H*'
+        count <- length(values)
+      if( count > length(values) )
         stop('template too long for values')
-      val <- values[1:byte]
-      values <- values[-(1:byte)]
+      val <- values[1:count]
+      values <- values[-(1:count)]
     } else
     # A null padded string
     if( type == 'a' ) {
-      if( byte == -1) # 'a*'
-        byte <- length(values)
-      if( byte > length(values) )
+      if( count == -1) # 'a*'
+        count <- length(values)
+      if( count > length(values) )
         stop('template too long for values')
 
-      val <- values[1:byte]
+      val <- values[1:count]
       # strings can no longer have embedded nuls as of R-2.8.0
       val <- rawToChar( val[as.logical(val)] )
-      values <- values[-(1:byte)]
+      values <- values[-(1:count)]
     } else
     # A space padded ASCII string
     if( type == 'A' ) {
-      if( byte == -1) # 'A*'
-        byte <- length(values)
-      if( byte > length(values) )
+      if( count == -1) # 'A*'
+        count <- length(values)
+      if( count > length(values) )
         stop('template too long for values')
-      val <- values[1:byte]
+      val <- values[1:count]
       # strings can no longer have embedded nuls as of R-2.8.0
       val <- rawToChar( val[as.logical(val)] )
       val <- sub(" +$", "", val)
-      values <- values[-(1:byte)]
+      values <- values[-(1:count)]
     } else
     # Bit string, low-to-high order
     if( type == 'b' ) {
