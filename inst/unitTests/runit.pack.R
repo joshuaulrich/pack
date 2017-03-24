@@ -77,11 +77,12 @@ test.binary_big_endian <- function() {
 # TODO 'b' and 'B' with counts
 
 
-## Character vector (basically a no-op)
-test.character_vector <- function() {
-  x <- pack('C', 0x46)  # 'F' character
-  checkIdentical(x, as.raw(0x46))
-  checkIdentical(unpack('C', x), list(0x46))
+## Unsigned char (8 bits)
+test.uint8 <- function() {
+  r <- as.raw(c(0x00, 0xff))
+  x <- pack('C C', 0L, 255L)  # min and max values
+  checkIdentical(x, r)
+  checkIdentical(unpack('C C', r), list(0L, 255L))
 }
 
 # TODO 'C' with counts
