@@ -85,6 +85,22 @@ test.uint8 <- function() {
   checkIdentical(unpack('C C', r), list(0L, 255L))
 }
 
+test.uint8_fails_LT0 <- function() {
+  checkException(pack('C', -1L))
+  # Unsure how to test unpack() here. You can always unpack a byte as an
+  # unsigned 8-bit int, even though it would be incorrect if that wasn't
+  # how it was packed.
+  #checkException(unpack('C', c(0x00, 0xff)), list(-1L))
+}
+
+test.uint8_fails_GT255 <- function() {
+  checkException(pack('C', 256L))
+  # Unsure how to test unpack() here. You can always unpack a byte as an
+  # unsigned 8-bit int, even though it would be incorrect if that wasn't
+  # how it was packed.
+  #checkException(unpack('C', c(0x00, 0xff)), list(256L))
+}
+
 # TODO 'C' with counts
 
 ## Unsigned 16-bit integer, little-endian
