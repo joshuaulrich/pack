@@ -2,11 +2,10 @@ Package: pack
 Type: Package
 Title: Convert values to/from raw vectors
 Version: 0.1-2
-Date: 2018-04-22
 Authors@R: c(
   person(c("Joshua","M."), "Ulrich", , "josh.m.ulrich@gmail.com", c("cre", "aut")),
-  person("Ken", "Williams", , , c("aut", "cph")),
-)
+  person("Ken", "Williams", , , c("aut", "cph"))
+  )
 Description: Functions to easily convert data to binary formats other programs/machines can understand.
 License: GPL-3
 LazyLoad: yes
